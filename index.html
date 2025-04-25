@@ -59,6 +59,13 @@
       background: #444;
     }
 
+    .adsense {
+      margin-top: 30px;
+      text-align: center;
+      padding-top: 20px;
+      border-top: 2px solid #eee;
+    }
+
     /* 📱 모바일 대응 */
     @media (max-width: 600px) {
       .piano {
@@ -66,29 +73,15 @@
       }
     }
 
-    /* 💰 광고 영역: 피아노 바로 아래 */
-    .ads-container {
-      width: 100%;
-      max-width: 840px;
-      min-height: 260px;
-      background-color: #333;
-      margin: 30px auto 60px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #aaa;
-      font-size: 14px;
-      border-radius: 8px; 
-    }
   </style>
 </head>
 <body>
   <div class="piano" id="piano"></div>
 
-  <!-- 💰 구글 애드센스 광고 영역 (피아노 바로 밑) -->
-  <div class="ads-container">
+  <div class="adsense">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9288770962100185"
-            crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script>
+    <!-- notepad -->
     <ins class="adsbygoogle"
         style="display:block"
         data-ad-client="ca-pub-9288770962100185"
