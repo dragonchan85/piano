@@ -25,7 +25,7 @@
       align-items: center;
       flex-direction: column;
       min-height: 100vh;
-      padding-bottom: 60px;
+      padding-bottom: 60px; /* 하단 여백 */
     }
 
     .piano {
@@ -33,7 +33,7 @@
       width: 100%;
       max-width: 840px;
       height: 300px;
-      margin-top: 60px auto 20px;
+      margin-top: 60px; /* 피아노와 상단 여백 */
       background-color: #222; /* 피아노 배경 색 */
       border-radius: 8px; /* 모서리 둥글게 */
     }
@@ -72,29 +72,33 @@
       }
     }
 
+    /* 광고 영역 스타일 */
     .ads-container {
       width: 100%;
       max-width: 840px;
-      min-height: 60px;
-      /* background-color: #444; 광고 배경 */
-      margin: 30px auto 60px; /* 광고와 다른 요소 사이에 여유 공간 */
+      min-height: 200px;
+      margin-top: 20px; /* 피아노와 광고 사이 간격 */
       display: flex;
       justify-content: center;
       align-items: center;
-      /* color: #fff; */
+      background-color: #333; /* 광고 배경 색 */
       font-size: 14px;
+      color: white;
       border-radius: 8px;
+      padding: 10px;
     }
 
   </style>
 </head>
 <body>
+  <!-- 피아노 영역 -->
   <div class="piano" id="piano"></div>
 
+  <!-- 광고 영역 -->
   <div class="ads-container">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9288770962100185"
           crossorigin="anonymous"></script>
-      <!-- notepad -->
+      <!-- 광고 영역 -->
       <ins class="adsbygoogle"
           style="display:block"
           data-ad-client="ca-pub-9288770962100185"
