@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9288770962100185"
+    crossorigin="anonymous"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>정확한 피아노 웹 연주기</title>
+  <meta name="description" content="실제 피아노와 동일한 건반 배열로 연주할 수 있는 웹 기반 피아노. 모바일, 데스크탑 최적화. C부터 B까지 흰 건반과 C#부터 A#까지 검은 건반의 정확한 위치 재현. 온라인에서 간편하게 피아노 연주를 즐기세요.">
+  <meta name="naver-site-verification" content="b366dbb6459aafa1c91f8f26b783724b86199d71" />
+
+  <style>
+    body {
+      margin: 0;
+      background: #111;
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .piano {
+      position: relative;
+      width: 100%;
+      max-width: 840px;
+      height: 300px;
+      margin-top: 60px;
+    }
+
+    .white-key {
+      position: absolute;
+      width: calc(100% / 14);
+      height: 100%;
+      background: white;
+      border: 1px solid #aaa;
+      z-index: 1;
+      box-sizing: border-box;
+    }
+
+    .black-key {
+      position: absolute;
+      width: calc(100% / 21);
+      height: 60%;
+      background: black;
+      z-index: 2;
+      box-shadow: 0 0 3px #000;
+    }
+
+    .white-key.active {
+      background: #ffec99;
+    }
+
+    .black-key.active {
+      background: #444;
+    }
+
+    /* 📱 모바일 대응 */
+    @media (max-width: 600px) {
+      .piano {
+        height: 180px;
+      }
+    }
+
+    /* 💰 광고 영역: 피아노 바로 아래 */
+    .ads-container {
+      width: 100%;
+      max-width: 840px;
+      min-height: 60px;
+      background: #222;
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #aaa;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="piano" id="piano"></div>
+
+  <!-- 💰 구글 애드센스 광고 영역 (피아노 바로 밑) -->
+  <div class="ads-container">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9288770962100185"
+            crossorigin="anonymous"></script>
+    <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-9288770962100185"
+        data-ad-slot="6399153707"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
+  <script>
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const audioCtx = new AudioContext();
+
+    const whiteNotes = ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'A', 'B'];
+    const blackNotes = [
+      { pos: 0, note: 'C#' }, { pos: 1, note: 'D#' },
+      { pos: 3, note: 'F#' }, { pos: 4, note: 'G#' }, { pos: 5, note: 'A#' },
+      { pos: 7, note: 'C#' }, { pos: 8, note: 'D#' },
+      { pos: 10, note: 'F#' }, { pos: 11, note: 'G#' }, { pos: 12, note: 'A#' }
+    ];
+
+    const piano = document.getElementById('piano');
+
+    whiteNotes.forEach((note, i) => {
+      const key = document.createElement('div');
+      key.classList.add('white-key');
+      key.style.left = `calc(${i} * (100% / 14))`;
+      key.dataset.note = note + (i < 7 ? '4' : '5');
+      key.dataset.freq = getFrequency(key.dataset.note);
+      key.addEventListener('click', () => playNote(key));
+      piano.appendChild(key);
+    });
+
+    blackNotes.forEach(({ pos, note }) => {
+      const key = document.createElement('div');
+      key.classList.add('black-key');
+      key.style.left = `calc(${pos} * (100% / 14) + (100% / 28))`;
+      key.dataset.note = note + (pos < 7 ? '4' : '5');
+      key.dataset.freq = getFrequency(key.dataset.note);
+      key.addEventListener('click', () => playNote(key));
+      piano.appendChild(key);
+    });
+
+    function playNote(keyEl) {
+      const freq = parseFloat(keyEl.dataset.freq);
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      osc.connect(gain).connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.5);
+
+      keyEl.classList.add('active');
+      setTimeout(() => keyEl.classList.remove('active'), 200);
+    }
+
+    function getFrequency(note) {
+      const noteMap = {
+        'C': 0, 'C#': 1, 'D': 2, 'D#': 3,
+        'E': 4, 'F': 5, 'F#': 6, 'G': 7,
+        'G#': 8, 'A': 9, 'A#': 10, 'B': 11
+      };
+      const match = note.match(/^([A-G]#?)(\d)$/);
+      if (!match) return 440;
+      const [_, n, octave] = match;
+      const midi = (parseInt(octave) + 1) * 12 + noteMap[n];
+      return 440 * Math.pow(2, (midi - 69) / 12);
+    }
+  </script>
+</body>
+</html>
