@@ -2,4 +2,4 @@ User-agent: *
 Disallow: /private/
 Allow: /
 
-Sitemap: https://dragonchan85.github.io/piano/sitemap.xml
+Sitemap: https://piano.yesnomark.com/sitemap.xml
